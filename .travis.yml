@@ -1,0 +1,33 @@
+sudo: false
+notifications:
+  irc: "chat.freenode.net#horde"
+language: php
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - nightly
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: nightly
+services:
+  - memcached
+  - redis-server
+before_script:
+  - export HASHTABLE_MEMCACHE_TEST_CONFIG='{"hashtable":{"memcache":{"hostspec":["localhost"],"port":[11211]}}}';
+    export HASHTABLE_PREDIS_TEST_CONFIG='{"hashtable":{"predis":{"hostspec":["localhost"],"scheme":"tcp","database":0}}}';
+  - if [ "$TRAVIS_PHP_VERSION" == "7.0" ] || [ $(echo "$TRAVIS_PHP_VERSION 7.0" | tr " " "\n" | sort -V | head -n1) = "7.0" ];
+    then
+        phpenv config-add .travis.php7.ini;
+    else
+        phpenv config-add .travis.ini;
+    fi
+  - phpenv config-rm xdebug.ini || echo "XDebug not enabled"
+  - pear install channel://pear.horde.org/Horde_Role
+  - pear install channel://pear.nrk.io/Predis
+  - pear install package.xml
+script:
+  - php $(find test -name AllTests.php)

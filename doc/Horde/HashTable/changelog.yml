@@ -1,0 +1,192 @@
+---
+1.2.7:
+  api: 1.2.0
+  state:
+    release: stable
+    api: stable
+  date: 2017-10-20
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes:
+1.2.6:
+  api: 1.2.0
+  state:
+    release: stable
+    api: stable
+  date: 2016-09-01
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [jan] Run Memcache tests on PHP 7 too.
+    [jan] Fix Redis tests.
+1.2.5:
+  api: 1.2.0
+  state:
+    release: stable
+    api: stable
+  date: 2016-07-02
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes:
+1.2.4:
+  api: 1.2.0
+  state:
+    release: stable
+    api: stable
+  date: 2016-02-01
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [jan] Mark PHP 7 as supported.
+1.2.3:
+  api: 1.2.0
+  state:
+    release: stable
+    api: stable
+  date: 2015-03-03
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [jan] Fix setting key prefixes.
+1.2.2:
+  api: 1.2.0
+  state:
+    release: stable
+    api: stable
+  date: 2015-02-10
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [jan] Add unit tests for Memcache and Redis backends.
+1.2.1:
+  api: 1.2.0
+  state:
+    release: stable
+    api: stable
+  date: 2015-01-08
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [jan] Improve PSR-2 compatibility.
+1.2.0:
+  api: 1.2.0
+  state:
+    release: stable
+    api: stable
+  date: 2014-08-04
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [mms] Add Horde_Vfs driver.
+1.1.3:
+  api: 1.1.0
+  state:
+    release: stable
+    api: stable
+  date: 2014-06-04
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [mms] In the Predis driver, ramp up to the maximum unlock wait interval (Request #13231).
+1.1.2:
+  api: 1.1.0
+  state:
+    release: stable
+    api: stable
+  date: 2014-04-03
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [mms] Implement logging.
+    [mms] Fix inconsistent usage of 'expire' and 'timeout' options (standardize on 'expire', which is more semantically correct).
+1.1.1:
+  api: 1.1.0
+  state:
+    release: stable
+    api: stable
+  date: 2014-02-11
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [mms] Fix getting data from Redis clusters.
+1.1.0:
+  api: 1.1.0
+  state:
+    release: stable
+    api: stable
+  date: 2013-07-23
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [mms] Add read-only property indicating whether driver supports locking.
+1.0.1:
+  api: 1.0.0
+  state:
+    release: stable
+    api: stable
+  date: 2013-07-15
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [mms] Workaround broken redis installations that don't support the keys() command (Bug #12416).
+1.0.0:
+  api: 1.0.0
+  state:
+    release: stable
+    api: stable
+  date: 2013-06-04
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    Final release.
+1.0.0RC1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2013-05-28
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [mms] Add initial unit tests.
+    [mms] Add null driver.
+    [mms] Add memory driver.
+    [mms] Actually have HashTable return results for get() and exists().
+    [mms] Add stats() method to the Memcache driver (Bug #12263).
+1.0.0beta2:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2013-05-14
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    [jan] Fix fatal errors.
+1.0.0beta1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2013-05-14
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    First beta release

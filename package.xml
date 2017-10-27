@@ -21,7 +21,6 @@
  </stability>
  <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
  <notes>
-* 
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -322,7 +321,6 @@
    <date>2016-07-02</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
-* 
    </notes>
   </release>
   <release>
@@ -349,7 +347,6 @@
    <date>2017-10-20</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
-* 
    </notes>
   </release>
  </changelog>

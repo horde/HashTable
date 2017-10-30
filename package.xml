@@ -10,7 +10,7 @@
   <email>slusarz@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2016-09-01</date>
+ <date>2017-10-30</date>
  <version>
   <release>1.2.7</release>
   <api>1.2.0</api>
@@ -28,6 +28,7 @@
    <dir name="doc">
     <dir name="Horde">
      <dir name="HashTable">
+      <file name="CHANGES" role="doc" />
       <file name="COPYING" role="doc" />
      </dir> <!-- /doc/Horde/HashTable -->
      </dir> <!-- /doc/Horde -->
@@ -113,6 +114,7 @@
  </dependencies>
  <phprelease>
   <filelist>
+   <install as="CHANGES" name="doc/Horde/HashTable/CHANGES" />
    <install as="COPYING" name="doc/Horde/HashTable/COPYING" />
    <install as="Horde/HashTable/Base.php" name="lib/Horde/HashTable/Base.php" />
    <install as="Horde/HashTable/Exception.php" name="lib/Horde/HashTable/Exception.php" />
@@ -354,7 +356,7 @@
    <stability>
     <release>stable</release>
     <api>stable</api></stability>
-   <date>2016-09-01</date>
+   <date>2017-10-30</date>
    <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
    <notes>
 * 

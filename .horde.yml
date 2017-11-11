@@ -31,4 +31,4 @@ dependencies:
       pear.horde.org/Horde_Log: ^2
       pear.horde.org/Horde_Memcache: ^2
       pear.horde.org/Horde_Vfs: ^2
-      pear.nrk.io/Predis: ^0.8.3
+      pear.nrk.io/Predis: ^1

@@ -59,7 +59,6 @@
       <file name="AllTests.php" role="test" />
       <file name="bootstrap.php" role="test" />
       <file name="conf.php.dist" role="test" />
-      <file name="phpunit.xml" role="test" />
      </dir> <!-- /test/Horde/HashTable -->
     </dir> <!-- /test/Horde -->
    </dir> <!-- /test -->
@@ -129,7 +128,6 @@
    <install as="Horde/HashTable/AllTests.php" name="test/Horde/HashTable/AllTests.php" />
    <install as="Horde/HashTable/bootstrap.php" name="test/Horde/HashTable/bootstrap.php" />
    <install as="Horde/HashTable/conf.php.dist" name="test/Horde/HashTable/conf.php.dist" />
-   <install as="Horde/HashTable/phpunit.xml" name="test/Horde/HashTable/phpunit.xml" />
    <install as="Horde/HashTable/Driver/MemcacheTest.php" name="test/Horde/HashTable/Driver/MemcacheTest.php" />
    <install as="Horde/HashTable/Driver/MemoryTest.php" name="test/Horde/HashTable/Driver/MemoryTest.php" />
    <install as="Horde/HashTable/Driver/PredisTest.php" name="test/Horde/HashTable/Driver/PredisTest.php" />

@@ -17,22 +17,18 @@
         {
             "type": "composer",
             "url": "https://horde-satis.maintaina.com/"
-        },
-        {
-            "url": "https://pear.nrk.io",
-            "type": "pear"
         }
     ],
     "require": {
         "horde/horde-installer-plugin": "*",
-        "php": "^5.3 || ^7",
-        "horde/exception": "^2"
+        "php": "^7",
+        "horde/exception": "^3"
     },
     "suggest": {
-        "horde/log": "^2",
-        "horde/memcache": "^2",
-        "horde/vfs": "^2",
-        "pear-pear.nrk.io/Predis": "^1"
+        "horde/log": "^3",
+        "horde/memcache": "^3",
+        "horde/vfs": "^3",
+        "predis/predis": "^1.1"
     },
     "autoload": {
         "psr-0": {

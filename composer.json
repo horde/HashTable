@@ -33,9 +33,6 @@
     "autoload": {
         "psr-0": {
             "Horde_HashTable": "lib/"
-        },
-        "psr-4": {
-            "Horde\\HashTable\\": "src/"
         }
     }
 }

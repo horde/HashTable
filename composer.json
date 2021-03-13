@@ -1,4 +1,5 @@
 {
+    "minimum-stability": "dev",
     "name": "horde/hashtable",
     "description": "Hash table client library",
     "type": "library",
@@ -20,12 +21,12 @@
     ],
     "require": {
         "php": "^7",
-        "horde/exception": "^3"
+        "horde/exception": "^3 || dev-FRAMEWORK_6_0"
     },
     "suggest": {
-        "horde/log": "^3",
-        "horde/memcache": "^3",
-        "horde/vfs": "^3",
+        "horde/log": "^3 || dev-FRAMEWORK_6_0",
+        "horde/memcache": "^3 || dev-FRAMEWORK_6_0",
+        "horde/vfs": "^3 || dev-FRAMEWORK_6_0",
         "predis/predis": "^1.1"
     },
     "autoload": {

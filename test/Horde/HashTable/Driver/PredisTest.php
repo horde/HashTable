@@ -11,6 +11,8 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
+namespace Horde\HashTable\Driver;
+use Horde_HashTable_Driver_TestBase as TestBase;
 
 /**
  * Tests for the HashTable redis storage driver.
@@ -22,9 +24,9 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-class Horde_HashTable_Driver_PredisTest extends Horde_HashTable_Driver_TestBase
+class PredisTest extends TestBase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (class_exists('Predis\Client') &&
             ($config = self::getConfig('HASHTABLE_PREDIS_TEST_CONFIG', __DIR__ . '/..')) &&

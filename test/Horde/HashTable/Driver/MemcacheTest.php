@@ -11,6 +11,8 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
+namespace Horde\HashTable\Driver;
+use Horde_HashTable_Driver_TestBase as TestBase;
 
 /**
  * Tests for the HashTable memcache storage driver.
@@ -22,9 +24,9 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-class Horde_HashTable_Driver_MemcacheTest extends Horde_HashTable_Driver_TestBase
+class MemcacheTest extends TestBase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if ((extension_loaded('memcache') || extension_loaded('memcached')) &&
             ($config = self::getConfig('HASHTABLE_MEMCACHE_TEST_CONFIG', __DIR__ . '/..')) &&

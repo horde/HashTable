@@ -12,7 +12,6 @@
  * @subpackage UnitTests
  */
 namespace Horde\HashTable\Driver;
-use Horde_HashTable_Driver_TestBase as TestBase;
 
 /**
  * Tests for the HashTable memcache storage driver.

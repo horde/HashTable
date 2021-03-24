@@ -11,6 +11,8 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
+namespace Horde\HashTable\Driver;
+use Horde_Test_Case as TestCase;
 
 /**
  * Tests for the HashTable storage drivers.
@@ -23,7 +25,7 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-abstract class Horde_HashTable_Driver_TestBase extends Horde_Test_Case
+abstract class TestBase extends TestCase
 {
     protected static $_driver;
 

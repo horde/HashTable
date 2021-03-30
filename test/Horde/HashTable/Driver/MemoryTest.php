@@ -11,6 +11,8 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
+namespace Horde\HashTable\Driver;
+use \Horde_HashTable_Memory;
 
 /**
  * Tests for the HashTable memory storage driver.
@@ -22,9 +24,9 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-class Horde_HashTable_Driver_MemoryTest extends Horde_HashTable_Driver_TestBase
+class MemoryTest extends TestBase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$_driver = new Horde_HashTable_Memory();
     }

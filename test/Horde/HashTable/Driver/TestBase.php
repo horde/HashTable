@@ -11,6 +11,8 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
+namespace Horde\HashTable\Driver;
+use Horde_Test_Case as TestCase;
 
 /**
  * Tests for the HashTable storage drivers.
@@ -23,20 +25,20 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-abstract class Horde_HashTable_Driver_TestBase extends Horde_Test_Case
+abstract class TestBase extends TestCase
 {
     protected static $_driver;
 
     protected static $_skip = false;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (self::$_skip) {
             $this->markTestSkipped(self::$_skip);
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$_driver) {
             self::$_driver->clear();

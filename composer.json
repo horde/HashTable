@@ -1,4 +1,5 @@
 {
+    "minimum-stability": "dev",
     "name": "horde/hashtable",
     "description": "Hash table client library",
     "type": "library",

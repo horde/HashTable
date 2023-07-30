@@ -324,6 +324,7 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
 
     /**
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return $this->exists($offset);
@@ -331,6 +332,7 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
 
     /**
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get($offset);
@@ -338,22 +340,35 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
 
     /**
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-        return $this->set($offset, $value);
+        $this->set($offset, $value);
     }
 
     /**
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
-        return $this->delete($offset);
+        $this->delete($offset);
     }
 
     /* Serializable methods. */
 
     /**
      */
+    public function __serialize()
+    {
+        return $this->_params;
+    }
+
+    public function __unserialize($data)
+    {
+        $this->_params = $data;
+        $this->_init();
+    }
+
     public function serialize()
     {
         return serialize($this->_params);

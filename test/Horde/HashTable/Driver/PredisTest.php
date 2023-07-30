@@ -24,15 +24,18 @@
  */
 class Horde_HashTable_Driver_PredisTest extends Horde_HashTable_Driver_TestBase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
-        if (class_exists('Predis\Client') &&
-            ($config = self::getConfig('HASHTABLE_PREDIS_TEST_CONFIG', __DIR__ . '/..')) &&
-            isset($config['hashtable']['predis'])) {
-            $predis = new Predis\Client($config['hashtable']['predis']);
-            self::$_driver = new Horde_HashTable_Predis(array('predis' => $predis));
+        if (class_exists('Predis\\Client')) {
+            if (($config = self::getConfig('HASHTABLE_PREDIS_TEST_CONFIG', __DIR__ . '/..')) &&
+                isset($config['hashtable']['predis'])) {
+                $predis = new Predis\Client($config['hashtable']['predis']);
+                self::$_driver = new Horde_HashTable_Predis(array('predis' => $predis));
+            } else {
+                self::$_skip = 'Predis configuration not available.';
+            }
         } else {
-            self::$_skip = 'Predis or configuration not available.';
+            self::$_skip = 'Predis\\Client class not available.';
         }
     }
 }

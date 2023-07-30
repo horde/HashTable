@@ -29,14 +29,14 @@ abstract class Horde_HashTable_Driver_TestBase extends Horde_Test_Case
 
     protected static $_skip = false;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (self::$_skip) {
             $this->markTestSkipped(self::$_skip);
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$_driver) {
             self::$_driver->clear();

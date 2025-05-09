@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "name": "horde/hashtable",
     "description": "Hash table client library",
     "type": "library",
@@ -12,13 +11,8 @@
             "role": "lead"
         }
     ],
-    "time": "2022-11-04",
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://horde-satis.maintaina.com"
-        }
-    ],
+    "time": "2025-05-09",
+    "repositories": [],
     "require": {
         "php": "^7.4 || ^8",
         "horde/exception": "^3 || dev-FRAMEWORK_6_0"
@@ -41,8 +35,6 @@
         }
     },
     "config": {
-        "allow-plugins": {
-            "horde/horde-installer-plugin": true
-        }
+        "allow-plugins": {}
     }
 }

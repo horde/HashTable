@@ -1,5 +1,5 @@
 ---
-2.0.0alpha5:
+2.0.0-alpha5:
   api: 2.0.0alpha1
   state:
     release: alpha
@@ -8,21 +8,23 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |+
-    
-2.0.0alpha4:
-  api: 2.0.0alpha1
+  notes: |-
+    Original version string was 2.0.0alpha5
+    |+
+2.0.0-alpha4:
+  api: 2.0.0-alpha1
   state:
-    release: alpha
-    api: alpha
-  date: 2022-11-04
+    release: true
+    api: true
+  date: 2025-05-09
   license:
-    identifier: LGPL-2.1
+    identifier: LGPL-2.1-only
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
-    [rla] Enable PHP 8.x compat.
-    |+
-2.0.0alpha3:
+    fix: missing type hints for derived class
+    feat: Add modern serialize
+    style: apply php-cs-fixer
+2.0.0-alpha3:
   api: 2.0.0alpha1
   state:
     release: alpha
@@ -31,8 +33,10 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |+
-2.0.0alpha2:
+  notes: |-
+    Original version string was 2.0.0alpha3
+    |+
+2.0.0-alpha2:
   api: 2.0.0alpha1
   state:
     release: alpha
@@ -41,8 +45,10 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |+
-2.0.0alpha1:
+  notes: |-
+    Original version string was 2.0.0alpha2
+    |+
+2.0.0-alpha1:
   api: 2.0.0alpha1
   state:
     release: stable
@@ -51,7 +57,8 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: ~
+  notes: |
+    Original version string was 2.0.0alpha1
 1.2.6:
   api: 1.2.0
   state:
@@ -185,6 +192,46 @@
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
     [mms] Workaround broken redis installations that don't support the keys() command (Bug #12416).
+1.0.0-beta2:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2013-05-14
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    Original version string was 1.0.0beta2
+    [jan] Fix fatal errors.
+1.0.0-beta1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2013-05-14
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    Original version string was 1.0.0beta1
+    First beta release
+1.0.0-RC1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2013-05-28
+  license:
+    identifier: LGPL-2.1
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    Original version string was 1.0.0RC1
+    [mms] Add initial unit tests.
+    [mms] Add null driver.
+    [mms] Add memory driver.
+    [mms] Actually have HashTable return results for get() and exists().
+    [mms] Add stats() method to the Memcache driver (Bug #12263).
 1.0.0:
   api: 1.0.0
   state:
@@ -196,40 +243,3 @@
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
     Final release.
-1.0.0RC1:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2013-05-28
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mms] Add initial unit tests.
-    [mms] Add null driver.
-    [mms] Add memory driver.
-    [mms] Actually have HashTable return results for get() and exists().
-    [mms] Add stats() method to the Memcache driver (Bug #12263).
-1.0.0beta2:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2013-05-14
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Fix fatal errors.
-1.0.0beta1:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2013-05-14
-  license:
-    identifier: LGPL-2.1
-    uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    First beta release

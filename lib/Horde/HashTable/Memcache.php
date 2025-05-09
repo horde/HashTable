@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2013-2017 Horde LLC (http://www.horde.org/)
  *
@@ -20,9 +21,7 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   HashTable
  */
-class Horde_HashTable_Memcache
-extends Horde_HashTable_Base
-implements Horde_HashTable_Lock
+class Horde_HashTable_Memcache extends Horde_HashTable_Base implements Horde_HashTable_Lock
 {
     /**
      * Memcache object.
@@ -37,7 +36,7 @@ implements Horde_HashTable_Lock
      *   - memcache: (Horde_Memcache) [REQUIRED] Memcache object.
      * </pre>
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = [])
     {
         if (!isset($params['memcache'])) {
             throw new InvalidArgumentException('Missing memcache parameter.');
@@ -72,7 +71,7 @@ implements Horde_HashTable_Lock
      */
     protected function _exists($keys)
     {
-        $out = array();
+        $out = [];
 
         foreach ($this->_get($keys) as $key => $val) {
             $out[$key] = ($val !== false);
@@ -95,8 +94,8 @@ implements Horde_HashTable_Lock
     protected function _set($key, $val, $opts)
     {
         return empty($opts['replace'])
-            ? $this->_memcache->set($key, $val, isset($opts['expire']) ? $opts['expire'] : 0)
-            : $this->_memcache->replace($key, $val, isset($opts['expire']) ? $opts['expire'] : 0);
+            ? $this->_memcache->set($key, $val, $opts['expire'] ?? 0)
+            : $this->_memcache->replace($key, $val, $opts['expire'] ?? 0);
     }
 
     /**

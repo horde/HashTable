@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2013-2017 Horde LLC (http://www.horde.org/)
  *
@@ -22,22 +23,20 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   HashTable
  */
-class Horde_HashTable_Predis
-extends Horde_HashTable_Base
-implements Horde_HashTable_Lock
+class Horde_HashTable_Predis extends Horde_HashTable_Base implements Horde_HashTable_Lock
 {
     /* Suffix added to key to create the lock entry. */
-    const LOCK_SUFFIX = '_l';
+    public const LOCK_SUFFIX = '_l';
 
     /* Lock timeout (in seconds). */
-    const LOCK_TIMEOUT = 30;
+    public const LOCK_TIMEOUT = 30;
 
     /**
      * Locked keys.
      *
      * @var array
      */
-    protected $_locks = array();
+    protected $_locks = [];
 
     /**
      * Predis client object.
@@ -52,7 +51,7 @@ implements Horde_HashTable_Lock
      *   - predis: (Predis\Client) [REQUIRED] Predis client object.
      * </pre>
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = [])
     {
         if (!isset($params['predis'])) {
             throw InvalidArgumentException('Missing predis parameter.');
@@ -60,7 +59,7 @@ implements Horde_HashTable_Lock
 
         parent::__construct($params);
 
-        register_shutdown_function(array($this, 'shutdown'));
+        register_shutdown_function([$this, 'shutdown']);
     }
 
     /**
@@ -95,9 +94,9 @@ implements Horde_HashTable_Lock
         foreach ($keys as $val) {
             $pipeline->exists($val);
         }
-        $exists = array();
+        $exists = [];
         foreach ($pipeline->execute() as $key => $val) {
-            $exists[$keys[$key]] = (bool)$val;
+            $exists[$keys[$key]] = (bool) $val;
         }
 
         return $exists;
@@ -108,13 +107,13 @@ implements Horde_HashTable_Lock
     protected function _get($keys)
     {
         $keys = array_values($keys);
-        $out = array();
+        $out = [];
 
         try {
             $data = $this->_predis->mget($keys);
         } catch (Exception $e) {
             /* MGET doesn't work on clusters. */
-            $data = array();
+            $data = [];
             foreach ($keys as $key) {
                 $data[$key] = $this->_predis->get($key);
             }

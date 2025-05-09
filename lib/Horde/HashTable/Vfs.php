@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2014-2017 Horde LLC (http://www.horde.org/)
  *
@@ -21,8 +22,7 @@
  * @package   HashTable
  * @since     1.2.0
  */
-class Horde_HashTable_Vfs
-extends Horde_HashTable_Base
+class Horde_HashTable_Vfs extends Horde_HashTable_Base
 {
     /**
      */
@@ -42,15 +42,15 @@ extends Horde_HashTable_Base
      *   - vfspath: (string) VFS path to use.
      * </pre>
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = [])
     {
         if (!isset($params['vfs'])) {
             throw new InvalidArgumentException('Missing vfs parameter.');
         }
 
-        parent::__construct(array_merge(array(
-            'vfspath' => 'hashtable_vfs'
-        ), $params));
+        parent::__construct(array_merge([
+            'vfspath' => 'hashtable_vfs',
+        ], $params));
     }
 
     /**
@@ -81,7 +81,7 @@ extends Horde_HashTable_Base
      */
     protected function _exists($keys)
     {
-        $out = array();
+        $out = [];
 
         foreach ($keys as $key) {
             $out[$key] = $this->_vfs->exists($this->_params['vfspath'], $key);
@@ -93,7 +93,7 @@ extends Horde_HashTable_Base
      */
     protected function _get($keys)
     {
-        $out = array();
+        $out = [];
 
         foreach ($keys as $key) {
             try {
@@ -125,7 +125,8 @@ extends Horde_HashTable_Base
     {
         try {
             $this->_vfs->emptyFolder($this->_params['vfspath']);
-        } catch (Horde_Vfs_Exception $e) {}
+        } catch (Horde_Vfs_Exception $e) {
+        }
     }
 
     /**

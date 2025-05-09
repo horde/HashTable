@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2013-2017 Horde LLC (http://www.horde.org/)
  *
@@ -20,9 +21,7 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   HashTable
  */
-class Horde_HashTable_Null
-extends Horde_HashTable_Base
-implements Horde_HashTable_Lock
+class Horde_HashTable_Null extends Horde_HashTable_Base implements Horde_HashTable_Lock
 {
     /**
      */
@@ -54,20 +53,14 @@ implements Horde_HashTable_Lock
 
     /**
      */
-    public function clear()
-    {
-    }
+    public function clear() {}
 
     /**
      */
-    public function lock($key)
-    {
-    }
+    public function lock($key) {}
 
     /**
      */
-    public function unlock($key)
-    {
-    }
+    public function unlock($key) {}
 
 }

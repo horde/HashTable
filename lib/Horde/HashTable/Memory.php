@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2013-2017 Horde LLC (http://www.horde.org/)
  *
@@ -20,16 +21,14 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   HashTable
  */
-class Horde_HashTable_Memory
-extends Horde_HashTable_Base
-implements Horde_HashTable_Lock
+class Horde_HashTable_Memory extends Horde_HashTable_Base implements Horde_HashTable_Lock
 {
     /**
      * Data.
      *
      * @var array
      */
-    protected $_data = array();
+    protected $_data = [];
 
     /**
      */
@@ -47,7 +46,7 @@ implements Horde_HashTable_Lock
     protected function _exists($keys)
     {
         $curr = time();
-        $out = array();
+        $out = [];
 
         foreach ($keys as $val) {
             if (isset($this->_data[$val]) &&
@@ -68,7 +67,7 @@ implements Horde_HashTable_Lock
     protected function _get($keys)
     {
         $exists = $this->_exists($keys);
-        $out = array();
+        $out = [];
 
         foreach ($keys as $val) {
             $out[$val] = $exists[$val]
@@ -84,16 +83,16 @@ implements Horde_HashTable_Lock
     protected function _set($key, $val, $opts)
     {
         if (!empty($opts['replace'])) {
-            $exists = $this->_exists(array($key));
+            $exists = $this->_exists([$key]);
             if (!$exists[$key]) {
                 return false;
             }
         }
 
-        $this->_data[$key] = array_filter(array(
+        $this->_data[$key] = array_filter([
             'l' => empty($opts['expire']) ? null : (time() + $opts['expire']),
-            'v' => $val
-        ));
+            'v' => $val,
+        ]);
 
         return true;
     }
@@ -102,19 +101,15 @@ implements Horde_HashTable_Lock
      */
     public function clear()
     {
-        $this->_data = array();
+        $this->_data = [];
     }
 
     /**
      */
-    public function lock($key)
-    {
-    }
+    public function lock($key) {}
 
     /**
      */
-    public function unlock($key)
-    {
-    }
+    public function unlock($key) {}
 
 }

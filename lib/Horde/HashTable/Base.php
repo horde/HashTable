@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2013-2017 Horde LLC (http://www.horde.org/)
  *
@@ -34,16 +35,16 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
      *
      * @var array
      */
-    protected $_noexist = array();
+    protected $_noexist = [];
 
     /**
      * Configuration parameters.
      *
      * @var array
      */
-    protected $_params = array(
-        'prefix' => 'hht_'
-    );
+    protected $_params = [
+        'prefix' => 'hht_',
+    ];
 
     /**
      * Persistent storage provided by driver?
@@ -63,7 +64,7 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
      *
      * @throws Horde_HashTable_Exception
      */
-    public function __construct(array $params = array())
+    public function __construct(array $params = [])
     {
         $this->_params = array_merge($this->_params, $params);
         $this->_init();
@@ -74,18 +75,16 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
      *
      * @throws Horde_HashTable_Exception
      */
-    protected function _init()
-    {
-    }
+    protected function _init() {}
 
     /**
      */
     public function __set($name, $val)
     {
         switch ($name) {
-        case 'prefix':
-            $this->_params['prefix'] = $val;
-            break;
+            case 'prefix':
+                $this->_params['prefix'] = $val;
+                break;
         }
     }
 
@@ -94,11 +93,11 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
     public function __get($name)
     {
         switch ($name) {
-        case 'locking':
-            return ($this instanceof Horde_HashTable_Lock);
+            case 'locking':
+                return ($this instanceof Horde_HashTable_Lock);
 
-        case 'persistent':
-            return $this->_persistent;
+            case 'persistent':
+                return $this->_persistent;
         }
     }
 
@@ -112,11 +111,11 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
     public function delete($keys)
     {
         if (!is_array($keys)) {
-            $keys = array($keys);
+            $keys = [$keys];
         }
 
         if ($todo = array_diff($keys, array_keys($this->_noexist))) {
-            $to_delete = array_fill_keys(array_map(array($this, 'hkey'), $todo), $todo);
+            $to_delete = array_fill_keys(array_map([$this, 'hkey'], $todo), $todo);
             if (!$this->_delete(array_keys($to_delete))) {
                 return false;
             }
@@ -154,7 +153,7 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
      */
     public function exists($keys)
     {
-        return $this->_getExists($keys, array($this, '_exists'));
+        return $this->_getExists($keys, [$this, '_exists']);
     }
 
     /**
@@ -176,7 +175,7 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
      */
     public function get($keys)
     {
-        return $this->_getExists($keys, array($this, '_get'));
+        return $this->_getExists($keys, [$this, '_get']);
     }
 
     /**
@@ -199,10 +198,10 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
      */
     protected function _getExists($keys, $callback)
     {
-        $noexist = $out = $todo = array();
+        $noexist = $out = $todo = [];
 
         if (!($ret_array = is_array($keys))) {
-            $keys = array($keys);
+            $keys = [$keys];
         }
 
         foreach ($keys as $val) {
@@ -262,7 +261,7 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
      *
      * @return boolean  True on success, false on error.
      */
-    public function set($key, $val, array $opts = array())
+    public function set($key, $val, array $opts = [])
     {
         if (!empty($opts['replace']) && isset($this->_noexist[$key])) {
             return false;

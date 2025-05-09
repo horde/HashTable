@@ -358,11 +358,22 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
         return serialize($this->_params);
     }
 
+    public function __serialize(): array
+    {
+        return $this->_params;
+    }
+
     /**
      */
     public function unserialize($data)
     {
         $this->_params = @unserialize($data);
+        $this->_init();
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->_params = $data;
         $this->_init();
     }
 

@@ -1,16 +1,16 @@
 ---
 2.0.0-alpha5:
-  api: 2.0.0alpha1
+  api: 2.0.0-alpha1
   state:
-    release: alpha
-    api: alpha
-  date: 2022-11-04
+    release: true
+    api: true
+  date: 2025-05-09
   license:
-    identifier: LGPL-2.1
+    identifier: LGPL-2.1-only
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |-
-    Original version string was 2.0.0alpha5
-    |+
+  notes: |
+    ci: Add quality tools
+    ci: Remove old CI files
 2.0.0-alpha4:
   api: 2.0.0-alpha1
   state:

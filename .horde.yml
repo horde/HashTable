@@ -32,3 +32,8 @@ dependencies:
       horde/memcache: ^3
       horde/vfs: ^3
       predis/predis: ^1.1
+  dev:
+    composer:
+      phpunit/phpunit: ^12
+      friendsofphp/php-cs-fixer: ^3
+      phpstan/phpstan: ^2

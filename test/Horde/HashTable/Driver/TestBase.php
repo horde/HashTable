@@ -12,7 +12,7 @@
  * @subpackage UnitTests
  */
 namespace Horde\HashTable\Driver;
-use Horde_Test_Case as TestCase;
+use PHPUnit\Framework\TestCase as TestCase;
 
 /**
  * Tests for the HashTable storage drivers.

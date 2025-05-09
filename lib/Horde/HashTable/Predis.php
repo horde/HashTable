@@ -54,7 +54,7 @@ class Horde_HashTable_Predis extends Horde_HashTable_Base implements Horde_HashT
     public function __construct(array $params = [])
     {
         if (!isset($params['predis'])) {
-            throw InvalidArgumentException('Missing predis parameter.');
+            throw new InvalidArgumentException('Missing predis parameter.');
         }
 
         parent::__construct($params);

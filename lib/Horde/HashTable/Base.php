@@ -39,10 +39,8 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
 
     /**
      * Configuration parameters.
-     *
-     * @var array
      */
-    protected $_params = [
+    protected array $_params = [
         'prefix' => 'hht_',
     ];
 
@@ -323,28 +321,28 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
 
     /**
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->exists($offset);
     }
 
     /**
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }
 
     /**
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         return $this->set($offset, $value);
     }
 
     /**
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         return $this->delete($offset);
     }

@@ -1,5 +1,5 @@
 .DS_Store
-.buildpath
+B.buildpath
 .cache
 .project
 .settings
@@ -27,3 +27,8 @@ run-tests.log
 /test/*/*/*/*.log
 /test/*/*/*/*.out
 
+.php-cs-fixer.cache
+.phpunit.cache/
+rector.php
+composer.lock
+/vendor/

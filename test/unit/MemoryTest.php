@@ -11,7 +11,7 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-namespace Horde\HashTable\Driver;
+namespace Horde\HashTable\Test\Unit;
 use \Horde_HashTable_Memory;
 
 /**

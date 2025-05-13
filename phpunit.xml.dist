@@ -16,6 +16,12 @@
         <testsuite name="unit">
             <directory>test/unit</directory>
         </testsuite>
+        <testsuite name="memcache">
+            <directory>test/memcache</directory>
+        </testsuite>
+        <testsuite name="redis">
+            <directory>test/redis</directory>
+        </testsuite>
     </testsuites>
 
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">

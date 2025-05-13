@@ -37,3 +37,9 @@ dependencies:
       phpunit/phpunit: ^12
       friendsofphp/php-cs-fixer: ^3
       phpstan/phpstan: ^2
+autoload-dev:
+    psr-4:
+       Horde\HashTable\Test\Unit\: "test/unit",
+       Horde\HashTable\Test\Memcache\: "test/memcache",
+       Horde\HashTable\Test\Redis\: "test/redis"
+     

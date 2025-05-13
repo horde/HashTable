@@ -11,8 +11,9 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-namespace Horde\HashTable\Driver;
-
+namespace Horde\HashTable\Test\Redis;
+use Horde\HashTable\Test\Unit\TestBase;
+use Horde_HashTable_Predis;
 /**
  * Tests for the HashTable redis storage driver.
  *

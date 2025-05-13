@@ -11,9 +11,9 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-namespace Horde\HashTable\Driver;
+namespace Horde\HashTable\Test\Unit;
 use PHPUnit\Framework\TestCase as TestCase;
-
+use PHPUnit\Framework\Attribute\Depends;
 /**
  * Tests for the HashTable storage drivers.
  *
@@ -60,9 +60,7 @@ abstract class TestBase extends TestCase
         sleep(2);
     }
 
-    /**
-     * @depends testSet
-     */
+    #[Depends('testSet')]
     public function testExists()
     {
         $this->assertTrue(self::$_driver->exists('foo'));
@@ -71,10 +69,8 @@ abstract class TestBase extends TestCase
         $this->assertFalse(self::$_driver->exists('foo4'));
     }
 
-    /**
-     * @depends testSet
-     * @depends testExists
-     */
+    #[Depends('testSet')]
+    #[Depends('testExists')]
     public function testGet()
     {
         $this->assertEquals(
@@ -89,11 +85,9 @@ abstract class TestBase extends TestCase
         $this->assertFalse(self::$_driver->get('foo4'));
     }
 
-    /**
-     * @depends testExists
-     * @depends testSet
-     * @depends testGet
-     */
+    #[Depends('testExists')]
+    #[Depends('testSet')]
+    #[Depends('testGet')]
     public function testDelete()
     {
         $this->assertTrue(self::$_driver->delete('foo'));

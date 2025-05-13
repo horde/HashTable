@@ -11,7 +11,7 @@
             "role": "lead"
         }
     ],
-    "time": "2025-05-09",
+    "time": "2025-05-13",
     "repositories": [],
     "require": {
         "php": "^7.4 || ^8",
@@ -35,7 +35,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Horde\\HashTable\\Test\\": "test/"
+            "Horde\\HashTable\\Test\\Unit\\": "test/unit",
+            "Horde\\HashTable\\Test\\Memcache\\": "test/memcache",
+            "Horde\\HashTable\\Test\\Redis\\": "test/redis"
         }
     },
     "config": {

@@ -11,8 +11,10 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
-namespace Horde\HashTable\Driver;
-
+namespace Horde\HashTable\Test\Memcache;
+use Horde\HashTable\Test\Unit\TestBase;
+use Horde_Memcache;
+use Horde_HashTable_Memcache;
 /**
  * Tests for the HashTable memcache storage driver.
  *

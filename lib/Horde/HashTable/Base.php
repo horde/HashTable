@@ -337,14 +337,14 @@ abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
      */
     public function offsetSet($offset, $value): void
     {
-        return $this->set($offset, $value);
+        $this->set($offset, $value);
     }
 
     /**
      */
     public function offsetUnset($offset): void
     {
-        return $this->delete($offset);
+        $this->delete($offset);
     }
 
     /* Serializable methods. */

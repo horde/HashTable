@@ -13,7 +13,7 @@ authors:
     active: false
     role: lead
 version:
-  release: 2.0.0-alpha5
+  release: 2.0.0-alpha6
   api: 2.0.0alpha1
 state:
   release: alpha
@@ -38,8 +38,7 @@ dependencies:
       friendsofphp/php-cs-fixer: ^3
       phpstan/phpstan: ^2
 autoload-dev:
-    psr-4:
-       Horde\HashTable\Test\Unit\: "test/unit",
-       Horde\HashTable\Test\Memcache\: "test/memcache",
-       Horde\HashTable\Test\Redis\: "test/redis"
-     
+  psr-4:
+    Horde\HashTable\Test\Unit\: test/unit
+    Horde\HashTable\Test\Memcache\: test/memcache
+    Horde\HashTable\Test\Redis\: test/redis

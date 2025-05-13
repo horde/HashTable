@@ -1,4 +1,16 @@
 ---
+2.0.0-alpha6:
+  api: 2.0.0-alpha1
+  state:
+    release: true
+    api: true
+  date: 2025-05-13
+  license:
+    identifier: LGPL-2.1-only
+    uri: http://www.horde.org/licenses/lgpl21
+  notes: |
+    ci: Modernize test pipeline
+    fix: Base class violated void return type
 2.0.0-alpha5:
   api: 2.0.0-alpha1
   state:

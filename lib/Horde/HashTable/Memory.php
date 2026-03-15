@@ -49,9 +49,9 @@ class Horde_HashTable_Memory extends Horde_HashTable_Base implements Horde_HashT
         $out = [];
 
         foreach ($keys as $val) {
-            if (isset($this->_data[$val]) &&
-                (!isset($this->_data[$val]['l']) ||
-                ($this->_data[$val]['l'] >= $curr))) {
+            if (isset($this->_data[$val])
+                && (!isset($this->_data[$val]['l'])
+                || ($this->_data[$val]['l'] >= $curr))) {
                 $out[$val] = true;
             } else {
                 $out[$val] = false;

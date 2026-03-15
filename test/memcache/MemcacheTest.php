@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2015-2017 Horde LLC (http://www.horde.org/)
  *
@@ -11,10 +12,13 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
+
 namespace Horde\HashTable\Test\Memcache;
+
 use Horde\HashTable\Test\Unit\TestBase;
 use Horde_Memcache;
 use Horde_HashTable_Memcache;
+
 /**
  * Tests for the HashTable memcache storage driver.
  *
@@ -24,21 +28,22 @@ use Horde_HashTable_Memcache;
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package    HashTable
  * @subpackage UnitTests
+ * @coversNothing
  */
 class MemcacheTest extends TestBase
 {
     public static function setUpBeforeClass(): void
     {
-        if ((extension_loaded('memcache') || extension_loaded('memcached')) &&
-            ($config = self::getConfig('HASHTABLE_MEMCACHE_TEST_CONFIG', __DIR__ . '/..')) &&
-            isset($config['hashtable']['memcache'])) {
+        if ((extension_loaded('memcache') || extension_loaded('memcached'))
+            && ($config = self::getConfig('HASHTABLE_MEMCACHE_TEST_CONFIG', __DIR__ . '/..'))
+            && isset($config['hashtable']['memcache'])) {
             $memcache = new Horde_Memcache(
                 array_merge(
                     $config['hashtable']['memcache'],
-                    array('prefix' => 'horde_hashtable_memcachetest')
+                    ['prefix' => 'horde_hashtable_memcachetest']
                 )
             );
-            self::$_driver = new Horde_HashTable_Memcache(array('memcache' => $memcache));
+            self::$_driver = new Horde_HashTable_Memcache(['memcache' => $memcache]);
         } else {
             self::$_skip = 'Memcache or configuration not available.';
         }

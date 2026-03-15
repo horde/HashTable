@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2013-2017 Horde LLC (http://www.horde.org/)
  *
@@ -11,8 +12,10 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
+
 namespace Horde\HashTable\Test\Unit;
-use \Horde_HashTable_Memory;
+
+use Horde_HashTable_Memory;
 
 /**
  * Tests for the HashTable memory storage driver.
@@ -23,6 +26,7 @@ use \Horde_HashTable_Memory;
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package    HashTable
  * @subpackage UnitTests
+ * @coversNothing
  */
 class MemoryTest extends TestBase
 {

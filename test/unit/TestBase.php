@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2013-2017 Horde LLC (http://www.horde.org/)
  *
@@ -11,9 +12,12 @@
  * @package    HashTable
  * @subpackage UnitTests
  */
+
 namespace Horde\HashTable\Test\Unit;
+
 use PHPUnit\Framework\TestCase as TestCase;
 use PHPUnit\Framework\Attribute\Depends;
+
 /**
  * Tests for the HashTable storage drivers.
  *
@@ -50,13 +54,13 @@ abstract class TestBase extends TestCase
         $this->assertTrue(self::$_driver->set('foo', 1));
 
         /* This expires after a second. */
-        $this->assertTrue(self::$_driver->set('foo2', 1, array('expire' => 1)));
+        $this->assertTrue(self::$_driver->set('foo2', 1, ['expire' => 1]));
         self::$_driver->exists('foo3');
-        $this->assertFalse(self::$_driver->set('foo3', 1, array('replace' => true)));
+        $this->assertFalse(self::$_driver->set('foo3', 1, ['replace' => true]));
         $this->assertTrue(self::$_driver->set('foo3', 1));
-        $this->assertTrue(self::$_driver->set('foo3', 2, array('replace' => true)));
+        $this->assertTrue(self::$_driver->set('foo3', 2, ['replace' => true]));
         /* @todo BC: 'timeout' will work also for 1.x. */
-        $this->assertTrue(self::$_driver->set('foo4', 1, array('timeout' => 1)));
+        $this->assertTrue(self::$_driver->set('foo4', 1, ['timeout' => 1]));
         sleep(2);
     }
 

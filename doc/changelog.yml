@@ -1,4 +1,15 @@
 ---
+2.0.0-beta1:
+  api: 2.0.0-beta1
+  state:
+    release: beta
+    api: beta
+  date: 2026-03-15
+  license:
+    identifier: LGPL-2.1-only
+    uri: https://spdx.org/licenses/LGPL-2.1-only.html
+  notes: |-
+    style: apply php-cs-fixer rules
 2.0.0-alpha6:
   api: 2.0.0-alpha1
   state:

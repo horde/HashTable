@@ -15,6 +15,10 @@
     <testsuites>
         <testsuite name="unit">
             <directory>test/unit</directory>
+            <directory>test/src/Unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>test/src/Integration</directory>
         </testsuite>
         <testsuite name="memcache">
             <directory>test/memcache</directory>

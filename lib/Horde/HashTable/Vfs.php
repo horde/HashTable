@@ -15,6 +15,14 @@
 /**
  * Implementation of HashTable for a VFS backend.
  *
+ * NOTE: This driver is not carried forward to the modern Horde\HashTable\
+ * interfaces (PSR-4 in src/). It served as a filesystem fallback for systems
+ * without Redis or Memcache, but has no locking, no expiration, and
+ * performance worse than not caching at all. Its only real consumer is
+ * Horde_Core_HashTable_Vfs / PersistentSession (a session-scoped temp file
+ * manager in IMP), which should eventually be replaced by a dedicated
+ * TempFileStore service.
+ *
  * @author    Michael Slusarz <slusarz@horde.org>
  * @category  Horde
  * @copyright 2014-2017 Horde LLC

@@ -11,7 +11,7 @@
             "role": "lead"
         }
     ],
-    "time": "2026-03-15",
+    "time": "2026-04-29",
     "repositories": [],
     "require": {
         "php": "^7.4 || ^8",
@@ -31,6 +31,9 @@
     "autoload": {
         "psr-0": {
             "Horde_HashTable": "lib/"
+        },
+        "psr-4": {
+            "Horde\\HashTable\\": "src/"
         }
     },
     "autoload-dev": {

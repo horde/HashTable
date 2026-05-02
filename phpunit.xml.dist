@@ -14,17 +14,12 @@
          colors="true">
     <testsuites>
         <testsuite name="unit">
-            <directory>test/unit</directory>
             <directory>test/src/Unit</directory>
+            <directory>test/lib/Unit</directory>
         </testsuite>
         <testsuite name="integration">
             <directory>test/src/Integration</directory>
-        </testsuite>
-        <testsuite name="memcache">
-            <directory>test/memcache</directory>
-        </testsuite>
-        <testsuite name="redis">
-            <directory>test/redis</directory>
+            <directory>test/lib/Integration</directory>
         </testsuite>
     </testsuites>
 

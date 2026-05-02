@@ -1,30 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Copyright 2013-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2013-2026 Horde LLC (http://www.horde.org/)
  *
  * See the enclosed file LICENSE for license information (LGPL). If you
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
  *
  * @category   Horde
- * @copyright  2013 Horde LLC
+ * @copyright  2013-2026 Horde LLC
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package    HashTable
  * @subpackage UnitTests
  */
 
-namespace Horde\HashTable\Test\Unit;
+namespace Horde\HashTable\Test\Lib\Unit;
 
-use PHPUnit\Framework\TestCase as TestCase;
-use PHPUnit\Framework\Attribute\Depends;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Tests for the HashTable storage drivers.
+ * Base test class for legacy HashTable lib/ storage drivers.
  *
  * @author     Michael Slusarz <slusarz@horde.org>
  * @category   Horde
- * @copyright  2013 Horde LLC
- * @ignore
+ * @copyright  2013-2026 Horde LLC
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package    HashTable
  * @subpackage UnitTests
@@ -40,6 +41,29 @@ abstract class TestBase extends TestCase
         if (self::$_skip) {
             $this->markTestSkipped(self::$_skip);
         }
+    }
+
+    /**
+     * Load test configuration from environment variable or conf.php file.
+     */
+    protected static function getConfig(string $env, ?string $path = null): ?array
+    {
+        $conf = [];
+        $config = getenv($env);
+        if ($config) {
+            $json = json_decode($config, true);
+            if ($json) {
+                return $json;
+            }
+        }
+
+        $configFile = ($path ?? __DIR__) . '/conf.php';
+        if (file_exists($configFile)) {
+            require $configFile;
+            return $conf;
+        }
+
+        return null;
     }
 
     public static function tearDownAfterClass(): void
@@ -99,5 +123,4 @@ abstract class TestBase extends TestCase
         $this->assertTrue(self::$_driver->delete('foo3'));
         $this->assertTrue(self::$_driver->delete('foo4'));
     }
-
 }

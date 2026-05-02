@@ -33,13 +33,11 @@ dependencies:
       horde/vfs: ^3
       predis/predis: ^1.1
   dev:
-    composer:
-      phpunit/phpunit: ^12
-      friendsofphp/php-cs-fixer: ^3
-      phpstan/phpstan: ^2
+    composer: {}
 autoload-dev:
   psr-4:
-    Horde\HashTable\Test\Unit\: test/unit
-    Horde\HashTable\Test\Memcache\: test/memcache
-    Horde\HashTable\Test\Redis\: test/redis
+    Horde\HashTable\Test\Lib\Unit\: test/lib/Unit
+    Horde\HashTable\Test\Lib\Integration\: test/lib/Integration
+    Horde\HashTable\Test\Src\Unit\: test/src/Unit
+    Horde\HashTable\Test\Src\Integration\: test/src/Integration
 vendor: horde

@@ -105,6 +105,17 @@
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
     Original version string was 2.0.0alpha1
+2.0.0-RC1:
+  api: 2.0.0-RC1
+  state:
+    release: RC
+    api: RC
+  date: 2026-05-11
+  license:
+    identifier: LGPL-2.1-only
+    uri: https://spdx.org/licenses/LGPL-2.1-only.html
+  notes: |-
+    feat: Support fallback from MGET to GET and support constructor option to suppress MGET
 1.2.6:
   api: 1.2.0
   state:

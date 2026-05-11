@@ -28,6 +28,7 @@ use Predis\ClientInterface as PredisClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Redis as PhpRedis;
+use Throwable;
 
 /**
  * Redis-backed HashTable implementation.
@@ -55,11 +56,16 @@ final class Redis implements RedisHashTable
     /** @var array<string, true> */
     private array $locks = [];
 
+    /**
+     * @param bool $disableMget  Set true to suppress MGET entirely (for Redis
+     *                           clusters or proxies that do not support multi-key commands).
+     */
     public function __construct(
         private readonly PhpRedis|PredisClientInterface $client,
         private readonly string $prefix = 'hht_',
         private readonly LoggerInterface $logger = new NullLogger(),
         private readonly int $lockTimeout = self::LOCK_TIMEOUT,
+        private readonly bool $disableMget = false,
     ) {
         $this->isPhpRedis = $client instanceof PhpRedis;
     }
@@ -109,10 +115,7 @@ final class Redis implements RedisHashTable
             $storageKeys[] = $this->hkey($key);
         }
 
-        $values = $this->client->mget($storageKeys);
-        if ($values === false) {
-            $values = array_fill(0, count($storageKeys), false);
-        }
+        $values = $this->fetchMultiple($storageKeys);
 
         $hits = [];
         $misses = $partition['missed'];
@@ -446,6 +449,48 @@ final class Redis implements RedisHashTable
     }
 
     // --- Private Helpers ---
+
+    /**
+     * Fetch multiple keys, falling back to individual GETs when MGET
+     * is unavailable (clusters, proxies, restricted ACLs).
+     *
+     * @param string[] $storageKeys  Prefixed Redis keys
+     * @return array<int, mixed>     Values indexed same as input
+     */
+    private function fetchMultiple(array $storageKeys): array
+    {
+        if ($this->disableMget) {
+            return $this->fetchIndividual($storageKeys);
+        }
+
+        try {
+            $values = $this->client->mget($storageKeys);
+            if ($values === false) {
+                return array_fill(0, count($storageKeys), false);
+            }
+            return $values;
+        } catch (Throwable $e) {
+            $this->logger->warning(
+                'HashTable Redis: MGET unavailable, falling back to individual GETs. '
+                . 'Set disableMget=true to suppress this warning. Error: ' . $e->getMessage()
+            );
+            return $this->fetchIndividual($storageKeys);
+        }
+    }
+
+    /**
+     * @param string[] $storageKeys
+     * @return array<int, mixed>
+     */
+    private function fetchIndividual(array $storageKeys): array
+    {
+        $values = [];
+        foreach ($storageKeys as $sk) {
+            $result = $this->client->get($sk);
+            $values[] = ($result === false || $result === null) ? false : $result;
+        }
+        return $values;
+    }
 
     private function acquireLock(string $lockKey): bool
     {

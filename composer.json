@@ -11,18 +11,23 @@
             "role": "lead"
         }
     ],
-    "time": "2026-05-11",
+    "time": "2026-05-20",
     "repositories": [],
     "require": {
         "php": "^8.1",
-        "horde/exception": "^3 || dev-FRAMEWORK_6_0"
+        "horde/exception": "^3"
     },
-    "require-dev": {},
+    "require-dev": {
+        "horde/argv": "^3",
+        "horde/cli": "^3"
+    },
     "suggest": {
-        "horde/log": "^3 || dev-FRAMEWORK_6_0",
-        "horde/memcache": "^3 || dev-FRAMEWORK_6_0",
-        "horde/vfs": "^3 || dev-FRAMEWORK_6_0",
-        "predis/predis": "^1.1"
+        "horde/argv": "^3",
+        "horde/cli": "^3",
+        "horde/log": "^3",
+        "horde/memcache": "^3",
+        "horde/vfs": "^3",
+        "predis/predis": "^2 || ^3"
     },
     "autoload": {
         "psr-0": {
@@ -40,6 +45,9 @@
             "Horde\\HashTable\\Test\\Src\\Integration\\": "test/src/Integration"
         }
     },
+    "bin": [
+        "bin/horde-redis-tester"
+    ],
     "config": {
         "allow-plugins": {}
     },
@@ -47,5 +55,6 @@
         "branch-alias": {
             "dev-FRAMEWORK_6_0": "2.x-dev"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }

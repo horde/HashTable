@@ -1,0 +1,262 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Horde Redis Diagnostic Tester
+ *
+ * Tests Redis connectivity and command availability without requiring
+ * the full Horde stack. Useful for diagnosing ACL restrictions,
+ * proxy limitations, or misconfiguration.
+ *
+ * Copyright 2026 Horde LLC (http://www.horde.org/)
+ *
+ * See the enclosed file LICENSE for license information (LGPL). If you
+ * did not receive this file, see http://www.horde.org/licenses/lgpl21.
+ */
+
+foreach ([__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../vendor/autoload.php'] as $autoloader) {
+    if (file_exists($autoloader)) {
+        require_once $autoloader;
+        break;
+    }
+}
+
+if (!class_exists(\Horde\HashTable\Redis\Diagnostic\RedisTester::class)) {
+    fwrite(STDERR, "Error: Cannot find autoloader. Run 'composer install' first.\n");
+    exit(1);
+}
+
+if (!class_exists(\Horde\Cli\Cli::class)) {
+    fwrite(STDERR, "Error: horde/cli is required. Run 'composer install' (it's in require-dev).\n");
+    exit(1);
+}
+
+if (!class_exists(\Horde\Argv\Parser::class)) {
+    fwrite(STDERR, "Error: horde/argv is required. Run 'composer install' (it's in require-dev).\n");
+    exit(1);
+}
+
+if (!extension_loaded('redis') && !class_exists(\Predis\Client::class)) {
+    fwrite(STDERR, "Error: No Redis client available. Install ext-redis or predis/predis.\n");
+    exit(1);
+}
+
+use Horde\Argv\Option;
+use Horde\Argv\Parser;
+use Horde\Cli\Cli;
+use Horde\HashTable\Redis\Diagnostic\DiagnosticResult;
+use Horde\HashTable\Redis\Diagnostic\RedisDriver;
+use Horde\HashTable\Redis\Diagnostic\RedisTester;
+use Horde\HashTable\Redis\Diagnostic\TestResult;
+use Horde\HashTable\Redis\Diagnostic\TestStatus;
+
+$parser = new Parser([
+    'usage' => '%prog [OPTIONS]',
+    'description' => 'Test Redis connectivity and command availability for Horde HashTable.',
+]);
+
+$parser->addOption(new Option('--hostname', [
+    'dest' => 'hostname',
+    'type' => 'string',
+    'default' => null,
+    'help' => 'Redis host (IPv4, IPv6, or hostname). Default: 127.0.0.1',
+]));
+
+$parser->addOption(new Option('-p', '--port', [
+    'dest' => 'port',
+    'type' => 'int',
+    'default' => null,
+    'help' => 'Redis port. Default: 6379 (or 6380 with --tls)',
+]));
+
+$parser->addOption(new Option('--tls', [
+    'action' => 'store_true',
+    'dest' => 'tls',
+    'default' => false,
+    'help' => 'Use TLS connection (changes default port to 6380)',
+]));
+
+$parser->addOption(new Option('-u', '--username', [
+    'dest' => 'username',
+    'type' => 'string',
+    'default' => null,
+    'help' => 'Redis 6+ ACL username',
+]));
+
+$parser->addOption(new Option('--password', [
+    'dest' => 'password',
+    'type' => 'string',
+    'default' => null,
+    'help' => 'Redis AUTH password',
+]));
+
+$parser->addOption(new Option('--prefix', [
+    'dest' => 'prefix',
+    'type' => 'string',
+    'default' => null,
+    'help' => 'Key prefix for test keys. Default: hht_',
+]));
+
+$parser->addOption(new Option('--database', [
+    'dest' => 'database',
+    'type' => 'int',
+    'default' => null,
+    'help' => 'Redis database index (0-15). Default: 0',
+]));
+
+$parser->addOption(new Option('-c', '--config-file', [
+    'dest' => 'configFile',
+    'type' => 'string',
+    'default' => null,
+    'help' => 'Path to Horde conf.php (reads $conf[\'hashtable\'] settings)',
+]));
+
+$parser->addOption(new Option('--driver', [
+    'dest' => 'driver',
+    'type' => 'choice',
+    'choices' => ['auto', 'phpredis', 'predis'],
+    'default' => 'auto',
+    'help' => 'Force Redis client: auto (default, prefers ext-redis), phpredis, or predis',
+]));
+
+[$options, $args] = $parser->parseArgs();
+
+$configDefaults = loadConfigFile($options->configFile);
+
+$tls = (bool) $options->tls;
+$hostname = $options->hostname ?? $configDefaults['hostname'] ?? '127.0.0.1';
+$port = $options->port ?? $configDefaults['port'] ?? ($tls ? 6380 : 6379);
+$username = $options->username ?? $configDefaults['username'] ?? null;
+$password = $options->password ?? $configDefaults['password'] ?? null;
+$prefix = $options->prefix ?? $configDefaults['prefix'] ?? 'hht_';
+$database = $options->database ?? $configDefaults['database'] ?? 0;
+$driver = RedisDriver::from($options->driver);
+
+$cli = new Cli(['pager' => false]);
+
+$cli->writeln('');
+$cli->header('Horde Redis Diagnostic');
+$cli->writeln('Host:     ' . $hostname . ':' . $port . ' (TLS: ' . ($tls ? 'yes' : 'no') . ')');
+$cli->writeln('Prefix:   ' . $prefix);
+$cli->writeln('Database: ' . $database);
+if ($username) {
+    $cli->writeln('Username: ' . $username);
+}
+$cli->writeln('');
+
+$tester = new RedisTester(
+    hostname: $hostname,
+    port: $port,
+    tls: $tls,
+    username: $username,
+    password: $password,
+    prefix: $prefix,
+    database: $database,
+    driver: $driver,
+);
+
+$result = $tester->run();
+printResults($cli, $result);
+exit($result->hasErrors() ? 2 : ($result->hasWarnings() ? 1 : 0));
+
+// --- Helper functions ---
+
+function loadConfigFile(?string $path): array
+{
+    if ($path === null) {
+        return [];
+    }
+
+    if (!file_exists($path)) {
+        fwrite(STDERR, "Warning: Config file not found: {$path}\n");
+        return [];
+    }
+
+    $conf = [];
+    require $path;
+
+    if (!isset($conf['hashtable'])) {
+        fwrite(STDERR, "Warning: No \$conf['hashtable'] found in config file.\n");
+        return [];
+    }
+
+    $ht = $conf['hashtable'];
+    $params = $ht['params'] ?? [];
+
+    $defaults = [];
+
+    $defaults['hostname'] = $params['hostspec'][0]
+        ?? $params['hostspec']
+        ?? $params['host']
+        ?? null;
+
+    $port = $params['port'][0] ?? $params['port'] ?? null;
+    if ($port !== null) {
+        $defaults['port'] = (int) $port;
+    }
+
+    $defaults['password'] = $params['password'] ?? null;
+    $defaults['username'] = $params['username'] ?? null;
+
+    $db = $params['database'] ?? null;
+    if ($db !== null) {
+        $defaults['database'] = (int) $db;
+    }
+
+    $defaults['prefix'] = $ht['prefix'] ?? null;
+
+    if (isset($ht['driver'])) {
+        $driver = strtolower($ht['driver']);
+        if (!in_array($driver, ['predis', 'redis'], true)) {
+            fwrite(STDERR, "Warning: hashtable.driver is '{$ht['driver']}' (not predis/redis). "
+                . "This tool tests Redis only.\n");
+        }
+    }
+
+    return array_filter($defaults, fn($v) => $v !== null && $v !== '');
+}
+
+function printResults(Cli $cli, DiagnosticResult $result): void
+{
+    foreach ($result->getResults() as $test) {
+        $tag = formatTag($cli, $test->status);
+        $cli->writeln($tag . '  ' . str_pad($test->name, 16) . ' ' . $test->message);
+        if ($test->detail !== null) {
+            foreach (explode("\n", $test->detail) as $line) {
+                $cli->writeln(str_repeat(' ', 28) . $line);
+            }
+        }
+    }
+
+    $cli->writeln('');
+
+    $ok = $result->countByStatus(TestStatus::OK);
+    $warn = $result->countByStatus(TestStatus::WARNING);
+    $err = $result->countByStatus(TestStatus::ERROR);
+
+    $cli->writeln("Summary: {$ok} OK, {$warn} WARNING, {$err} ERROR");
+
+    if ($err > 0) {
+        $cli->message('Redis connection has critical errors. Horde HashTable will not function.', 'cli.error');
+    } elseif ($warn > 0) {
+        $cli->message('Some commands are restricted. Horde may work with reduced performance.', 'cli.warning');
+    } else {
+        $cli->message('All tests passed. Redis is fully functional for Horde.', 'cli.success');
+    }
+}
+
+function formatTag(Cli $cli, TestStatus $status): string
+{
+    $label = '[' . $status->value . ']';
+    $padded = str_pad($label, 9);
+
+    return match ($status) {
+        TestStatus::OK => $cli->color('green', $padded),
+        TestStatus::WARNING => $cli->color('yellow', $padded),
+        TestStatus::ERROR => $cli->color('red', $padded),
+        TestStatus::SKIP => $cli->color('lightgray', $padded),
+        TestStatus::INFO => $cli->color('blue', $padded),
+    };
+}

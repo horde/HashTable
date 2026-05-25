@@ -56,6 +56,10 @@ if (!extension_loaded('redis') && !class_exists(\Predis\Client::class)) {
 use Horde\Argv\Option;
 use Horde\Argv\Parser;
 use Horde\Cli\Cli;
+use Horde\HashTable\Redis\Config\RedisConfigMapper;
+use Horde\HashTable\Redis\Config\RedisNode;
+use Horde\HashTable\Redis\Config\SentinelConfig;
+use Horde\HashTable\Redis\Config\SingleNodeConfig;
 use Horde\HashTable\Redis\Diagnostic\DiagnosticResult;
 use Horde\HashTable\Redis\Diagnostic\RedisDriver;
 use Horde\HashTable\Redis\Diagnostic\RedisTester;
@@ -133,39 +137,61 @@ $parser->addOption(new Option('--driver', [
 
 [$options, $args] = $parser->parseArgs();
 
-$configDefaults = loadConfigFile($options->configFile);
-
-$tls = (bool) $options->tls;
-$hostname = $options->hostname ?? $configDefaults['hostname'] ?? '127.0.0.1';
-$port = $options->port ?? $configDefaults['port'] ?? ($tls ? 6380 : 6379);
-$username = $options->username ?? $configDefaults['username'] ?? null;
-$password = $options->password ?? $configDefaults['password'] ?? null;
-$prefix = $options->prefix ?? $configDefaults['prefix'] ?? 'hht_';
-$database = $options->database ?? $configDefaults['database'] ?? 0;
 $driver = RedisDriver::from($options->driver);
-
 $cli = new Cli(['pager' => false]);
+
+$configParams = loadConfigFileParams($options->configFile);
+
+if ($configParams !== [] && $options->hostname === null) {
+    $prefix = $options->prefix ?? $configParams['prefix'] ?? 'hht_';
+    if (isset($options->database)) {
+        $configParams['database'] = $options->database;
+    }
+    if ($options->username !== null) {
+        $configParams['username'] = $options->username;
+    }
+    if ($options->password !== null) {
+        $configParams['password'] = $options->password;
+    }
+    $config = RedisConfigMapper::fromArray($configParams, $prefix);
+} else {
+    $configDefaults = extractLegacyDefaults($configParams);
+    $tls = (bool) $options->tls;
+    $hostname = $options->hostname ?? $configDefaults['hostname'] ?? '127.0.0.1';
+    $port = $options->port ?? $configDefaults['port'] ?? ($tls ? 6380 : 6379);
+    $username = $options->username ?? $configDefaults['username'] ?? null;
+    $password = $options->password ?? $configDefaults['password'] ?? null;
+    $prefix = $options->prefix ?? $configDefaults['prefix'] ?? 'hht_';
+    $database = $options->database ?? $configDefaults['database'] ?? 0;
+
+    $config = new SingleNodeConfig(
+        node: new RedisNode(host: $hostname, port: $port, tls: $tls),
+        password: ($password !== null && $password !== '') ? $password : null,
+        username: ($username !== null && $username !== '') ? $username : null,
+        prefix: $prefix,
+        database: (int) $database,
+    );
+}
 
 $cli->writeln('');
 $cli->header('Horde Redis Diagnostic');
-$cli->writeln('Host:     ' . $hostname . ':' . $port . ' (TLS: ' . ($tls ? 'yes' : 'no') . ')');
-$cli->writeln('Prefix:   ' . $prefix);
-$cli->writeln('Database: ' . $database);
-if ($username) {
-    $cli->writeln('Username: ' . $username);
+
+if ($config instanceof SentinelConfig) {
+    $hosts = array_map(fn($n) => $n->host . ':' . $n->port, $config->sentinels);
+    $cli->writeln('Mode:     Sentinel (service: ' . $config->service . ')');
+    $cli->writeln('Sentinels: ' . implode(', ', $hosts));
+} elseif ($config instanceof SingleNodeConfig) {
+    $tlsLabel = $config->node->tls ? 'yes' : 'no';
+    $cli->writeln('Host:     ' . $config->node->host . ':' . $config->node->port . ' (TLS: ' . $tlsLabel . ')');
+}
+$cli->writeln('Prefix:   ' . $config->prefix());
+$cli->writeln('Database: ' . $config->database());
+if ($config->username()) {
+    $cli->writeln('Username: ' . $config->username());
 }
 $cli->writeln('');
 
-$tester = new RedisTester(
-    hostname: $hostname,
-    port: $port,
-    tls: $tls,
-    username: $username,
-    password: $password,
-    prefix: $prefix,
-    database: $database,
-    driver: $driver,
-);
+$tester = RedisTester::fromConfig($config, $driver);
 
 $result = $tester->run();
 printResults($cli, $result);
@@ -173,7 +199,7 @@ exit($result->hasErrors() ? 2 : ($result->hasWarnings() ? 1 : 0));
 
 // --- Helper functions ---
 
-function loadConfigFile(?string $path): array
+function loadConfigFileParams(?string $path): array
 {
     if ($path === null) {
         return [];
@@ -195,6 +221,23 @@ function loadConfigFile(?string $path): array
     $ht = $conf['hashtable'];
     $params = $ht['params'] ?? [];
 
+    if (isset($ht['prefix']) && $ht['prefix'] !== '') {
+        $params['prefix'] = $ht['prefix'];
+    }
+
+    if (isset($ht['driver'])) {
+        $driver = strtolower($ht['driver']);
+        if (!in_array($driver, ['predis', 'redis'], true)) {
+            fwrite(STDERR, "Warning: hashtable.driver is '{$ht['driver']}' (not predis/redis). "
+                . "This tool tests Redis only.\n");
+        }
+    }
+
+    return $params;
+}
+
+function extractLegacyDefaults(array $params): array
+{
     $defaults = [];
 
     $defaults['hostname'] = $params['hostspec'][0]
@@ -215,15 +258,7 @@ function loadConfigFile(?string $path): array
         $defaults['database'] = (int) $db;
     }
 
-    $defaults['prefix'] = $ht['prefix'] ?? null;
-
-    if (isset($ht['driver'])) {
-        $driver = strtolower($ht['driver']);
-        if (!in_array($driver, ['predis', 'redis'], true)) {
-            fwrite(STDERR, "Warning: hashtable.driver is '{$ht['driver']}' (not predis/redis). "
-                . "This tool tests Redis only.\n");
-        }
-    }
+    $defaults['prefix'] = $params['prefix'] ?? null;
 
     return array_filter($defaults, fn($v) => $v !== null && $v !== '');
 }

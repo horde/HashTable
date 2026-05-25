@@ -24,6 +24,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Exception;
 
 /**
  * Integration tests for the Memcache HashTable driver.
@@ -53,7 +54,7 @@ final class MemcacheTest extends TestCase
                 'port' => [11211],
                 'prefix' => 'hht_integration_test',
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             self::markTestSkipped('Memcache server not available: ' . $e->getMessage());
         }
     }

@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Predis\Client as PredisClient;
+use Exception;
 
 #[CoversClass(Redis::class)]
 #[Group('integration')]
@@ -34,7 +35,7 @@ final class RedisPredisTest extends TestCase
                 'database' => 15,
             ]);
             self::$predis->ping();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             self::markTestSkipped('Redis server not available: ' . $e->getMessage());
         }
     }

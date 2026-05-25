@@ -19,6 +19,4 @@ namespace Horde\HashTable;
 /**
  * Thrown when the underlying storage backend is unreachable.
  */
-class ConnectionException extends HashTableException
-{
-}
+class ConnectionException extends HashTableException {}

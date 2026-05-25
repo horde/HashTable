@@ -45,3 +45,4 @@ autoload-dev:
     Horde\HashTable\Test\Src\Unit\: test/src/Unit
     Horde\HashTable\Test\Src\Integration\: test/src/Integration
 vendor: horde
+keywords: []

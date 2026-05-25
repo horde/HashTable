@@ -62,9 +62,7 @@ final class NullDriver implements HashTable
         return false;
     }
 
-    public function delete(string|array $keys): void
-    {
-    }
+    public function delete(string|array $keys): void {}
 
     public function exists(string $key): bool
     {
@@ -76,7 +74,5 @@ final class NullDriver implements HashTable
         return array_fill_keys($keys, false);
     }
 
-    public function clear(): void
-    {
-    }
+    public function clear(): void {}
 }

@@ -11,9 +11,15 @@ declare(strict_types=1);
 
 namespace Horde\HashTable\Redis\Diagnostic;
 
+use Horde\HashTable\Redis\Config\RedisConfig;
+use Horde\HashTable\Redis\Config\RedisNode;
+use Horde\HashTable\Redis\Config\SentinelConfig;
+use Horde\HashTable\Redis\Config\SingleNodeConfig;
 use Predis\Client as PredisClient;
 use Redis as PhpRedis;
+use RedisSentinel;
 use Throwable;
+use RuntimeException;
 
 /**
  * Standalone Redis diagnostic tester.
@@ -36,14 +42,68 @@ final class RedisTester
         private readonly string $prefix,
         private readonly int $database,
         private readonly RedisDriver $driver = RedisDriver::AUTO,
+        private readonly ?RedisConfig $config = null,
     ) {}
+
+    /**
+     * Create a tester from a typed RedisConfig object.
+     */
+    public static function fromConfig(RedisConfig $config, RedisDriver $driver = RedisDriver::AUTO): self
+    {
+        if ($config instanceof SentinelConfig) {
+            $firstNode = $config->sentinels[0] ?? new RedisNode('127.0.0.1', 26379);
+            return new self(
+                hostname: $firstNode->host,
+                port: $firstNode->port,
+                tls: $firstNode->tls,
+                username: $config->username(),
+                password: $config->password(),
+                prefix: $config->prefix(),
+                database: $config->database(),
+                driver: $driver,
+                config: $config,
+            );
+        }
+
+        if ($config instanceof SingleNodeConfig) {
+            return new self(
+                hostname: $config->node->host,
+                port: $config->node->port,
+                tls: $config->node->tls,
+                username: $config->username(),
+                password: $config->password(),
+                prefix: $config->prefix(),
+                database: $config->database(),
+                driver: $driver,
+                config: $config,
+            );
+        }
+
+        return new self(
+            hostname: '127.0.0.1',
+            port: 6379,
+            tls: false,
+            username: $config->username(),
+            password: $config->password(),
+            prefix: $config->prefix(),
+            database: $config->database(),
+            driver: $driver,
+            config: $config,
+        );
+    }
 
     public function run(): DiagnosticResult
     {
         $result = new DiagnosticResult();
 
         $this->reportDriverAvailability($result);
-        $this->testConnection($result);
+
+        if ($this->config instanceof SentinelConfig) {
+            $this->testSentinelTopology($result);
+        } else {
+            $this->testConnection($result);
+        }
+
         if ($result->hasErrors()) {
             return $result;
         }
@@ -110,14 +170,14 @@ final class RedisTester
     {
         if ($this->driver === RedisDriver::PHPREDIS) {
             if (!$phpredisAvailable) {
-                throw new \RuntimeException('ext-redis requested but not available');
+                throw new RuntimeException('ext-redis requested but not available');
             }
             return RedisDriver::PHPREDIS;
         }
 
         if ($this->driver === RedisDriver::PREDIS) {
             if (!$predisAvailable) {
-                throw new \RuntimeException('predis requested but not installed');
+                throw new RuntimeException('predis requested but not installed');
             }
             return RedisDriver::PREDIS;
         }
@@ -128,6 +188,138 @@ final class RedisTester
         }
 
         return RedisDriver::PREDIS;
+    }
+
+    private function testSentinelTopology(DiagnosticResult $result): void
+    {
+        assert($this->config instanceof SentinelConfig);
+        $sentinelConfig = $this->config;
+
+        $reachable = 0;
+        $masterAddr = null;
+
+        foreach ($sentinelConfig->sentinels as $node) {
+            try {
+                if ($this->resolvedDriver === RedisDriver::PREDIS) {
+                    $params = ['scheme' => 'tcp', 'host' => $node->host, 'port' => $node->port];
+                    if ($sentinelConfig->sentinelPassword !== null) {
+                        $params['password'] = $sentinelConfig->sentinelPassword;
+                    }
+                    $sentinel = new PredisClient($params);
+                    $sentinel->ping();
+                    $reachable++;
+
+                    if ($masterAddr === null) {
+                        $addr = $sentinel->sentinel('get-master-addr-by-name', $sentinelConfig->service);
+                        if (is_array($addr) && count($addr) === 2) {
+                            $masterAddr = [(string) $addr[0], (int) $addr[1]];
+                        }
+                    }
+                } else {
+                    $opts = ['host' => $node->host, 'port' => $node->port];
+                    if ($sentinelConfig->sentinelPassword !== null) {
+                        $opts['auth'] = $sentinelConfig->sentinelPassword;
+                    }
+                    $sentinel = new RedisSentinel($opts);
+                    $sentinel->ping();
+                    $reachable++;
+
+                    if ($masterAddr === null) {
+                        $addr = $sentinel->getMasterAddrByName($sentinelConfig->service);
+                        if (is_array($addr) && count($addr) === 2) {
+                            $masterAddr = [(string) $addr[0], (int) $addr[1]];
+                        }
+                    }
+                }
+            } catch (Throwable $e) {
+                $result->add(new TestResult(
+                    'Sentinel',
+                    TestStatus::WARNING,
+                    'Cannot reach sentinel ' . $node->host . ':' . $node->port,
+                    $e->getMessage(),
+                ));
+            }
+        }
+
+        $total = count($sentinelConfig->sentinels);
+        if ($reachable === 0) {
+            $result->add(new TestResult(
+                'Sentinel',
+                TestStatus::ERROR,
+                'No sentinels reachable (tried ' . $total . ')',
+            ));
+            return;
+        }
+
+        $result->add(new TestResult(
+            'Sentinel',
+            TestStatus::OK,
+            $reachable . '/' . $total . ' sentinels reachable',
+        ));
+
+        if ($masterAddr === null) {
+            $result->add(new TestResult(
+                'Master',
+                TestStatus::ERROR,
+                'No sentinel returned master address for service: ' . $sentinelConfig->service,
+            ));
+            return;
+        }
+
+        $result->add(new TestResult(
+            'Master',
+            TestStatus::OK,
+            'Resolved master: ' . $masterAddr[0] . ':' . $masterAddr[1] . ' (service: ' . $sentinelConfig->service . ')',
+        ));
+
+        $this->connectToResolvedMaster($result, $masterAddr[0], $masterAddr[1]);
+    }
+
+    private function connectToResolvedMaster(DiagnosticResult $result, string $host, int $port): void
+    {
+        try {
+            if ($this->resolvedDriver === RedisDriver::PHPREDIS) {
+                $redis = new PhpRedis();
+                $connected = $redis->connect($host, $port);
+                if (!$connected) {
+                    throw new RuntimeException('connect() returned false');
+                }
+                if ($this->username !== null && $this->username !== '') {
+                    $redis->auth([$this->username, $this->password ?? '']);
+                } elseif ($this->password !== null && $this->password !== '') {
+                    $redis->auth($this->password);
+                }
+                $this->client = $redis;
+                $info = $redis->info('server');
+                $version = $info['redis_version'] ?? 'unknown';
+            } else {
+                $connectionParams = ['scheme' => 'tcp', 'host' => $host, 'port' => $port];
+                if ($this->password !== null && $this->password !== '') {
+                    $connectionParams['password'] = $this->password;
+                }
+                if ($this->username !== null && $this->username !== '') {
+                    $connectionParams['username'] = $this->username;
+                }
+                $this->client = new PredisClient($connectionParams);
+                $info = $this->client->info('server');
+                $version = $info['Server']['redis_version'] ?? $info['redis_version'] ?? 'unknown';
+            }
+
+            $driverName = $this->resolvedDriver === RedisDriver::PHPREDIS ? 'ext-redis' : 'predis';
+            $result->add(new TestResult(
+                'Connection',
+                TestStatus::OK,
+                'Connected to master Redis ' . $version . ' via ' . $driverName,
+            ));
+            $this->reportAuth($result);
+        } catch (Throwable $e) {
+            $result->add(new TestResult(
+                'Connection',
+                TestStatus::ERROR,
+                'Failed to connect to resolved master ' . $host . ':' . $port,
+                $e->getMessage(),
+            ));
+        }
     }
 
     private function testConnection(DiagnosticResult $result): void
@@ -160,7 +352,7 @@ final class RedisTester
 
         $connected = $redis->connect($host, $this->port);
         if (!$connected) {
-            throw new \RuntimeException('connect() returned false');
+            throw new RuntimeException('connect() returned false');
         }
 
         if ($this->username !== null && $this->username !== '') {

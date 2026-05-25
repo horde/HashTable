@@ -19,6 +19,4 @@ namespace Horde\HashTable;
 /**
  * Thrown when a lock cannot be acquired within the configured timeout.
  */
-class LockTimeoutException extends HashTableException
-{
-}
+class LockTimeoutException extends HashTableException {}

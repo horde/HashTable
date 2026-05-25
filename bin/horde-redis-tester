@@ -16,15 +16,25 @@ declare(strict_types=1);
  * did not receive this file, see http://www.horde.org/licenses/lgpl21.
  */
 
-foreach ([__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../vendor/autoload.php'] as $autoloader) {
-    if (file_exists($autoloader)) {
-        require_once $autoloader;
-        break;
+if (isset($GLOBALS['_composer_autoload_path'])) {
+    require_once $GLOBALS['_composer_autoload_path'];
+} else {
+    $found = false;
+    foreach ([__DIR__ . '/../vendor/autoload.php', __DIR__ . '/../../../autoload.php'] as $autoloader) {
+        if (file_exists($autoloader)) {
+            require_once $autoloader;
+            $found = true;
+            break;
+        }
+    }
+    if (!$found) {
+        fwrite(STDERR, "Error: Cannot find autoloader. Run 'composer install' first.\n");
+        exit(1);
     }
 }
 
 if (!class_exists(\Horde\HashTable\Redis\Diagnostic\RedisTester::class)) {
-    fwrite(STDERR, "Error: Cannot find autoloader. Run 'composer install' first.\n");
+    fwrite(STDERR, "Error: RedisTester class not found. Ensure horde/hashtable is installed correctly.\n");
     exit(1);
 }
 

@@ -105,6 +105,19 @@
     uri: http://www.horde.org/licenses/lgpl21
   notes: |
     Original version string was 2.0.0alpha1
+2.0.0-RC3:
+  api: 2.0.0-RC3
+  state:
+    release: RC
+    api: RC
+  date: 2026-05-28
+  license:
+    identifier: LGPL-2.1-only
+    uri: https://spdx.org/licenses/LGPL-2.1-only.html
+  notes: |-
+    feat(redis): add typed config objects and sentinel support
+    fix(bin): correct autoloader resolution in horde-redis-tester
+    chore: Update workflow dependency
 2.0.0-RC2:
   api: 2.0.0-RC2
   state:

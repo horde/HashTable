@@ -20,6 +20,8 @@
  * @copyright 2013-2017 Horde LLC
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   HashTable
+ *
+ * @deprecated Use {@see \Horde\HashTable\Driver\Memcache}.
  */
 class Horde_HashTable_Memcache extends Horde_HashTable_Base implements Horde_HashTable_Lock
 {

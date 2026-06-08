@@ -29,6 +29,13 @@
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   HashTable
  * @since     1.2.0
+ *
+ * @deprecated The legacy Horde_HashTable_Base interface is deprecated. The
+ *             VFS-backed file storage pattern has no PSR-4 equivalent in the
+ *             new Horde\HashTable\Driver namespace; consumers needing
+ *             session-scoped temp storage should look at
+ *             Horde_Core_HashTable_Vfs / Horde_Core_HashTable_PersistentSession
+ *             which intentionally remain on the legacy interface.
  */
 class Horde_HashTable_Vfs extends Horde_HashTable_Base
 {

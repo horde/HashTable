@@ -22,6 +22,11 @@
  * @copyright 2013-2017 Horde LLC
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   HashTable
+ *
+ * @deprecated Use {@see \Horde\HashTable\Driver\Redis} via
+ *             {@see \Horde\Core\Factory\HashTableFactory}. The PSR-4 driver
+ *             supports phpredis as well as Predis and uses plain prefix+key
+ *             storage instead of MD5 hashing.
  */
 class Horde_HashTable_Predis extends Horde_HashTable_Base implements Horde_HashTable_Lock
 {

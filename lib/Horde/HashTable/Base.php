@@ -27,6 +27,12 @@
  * @property-read boolean $persistent  Does hash table provide persistent
  *                                     storage?
  * @property-write string $prefix  Set the hash key prefix.
+ *
+ * @deprecated Use {@see \Horde\HashTable\HashTable} (and the
+ *             {@see \Horde\HashTable\LockableHashTable} /
+ *             {@see \Horde\HashTable\RedisHashTable} extensions). The PSR-4
+ *             interfaces support phpredis as well as Predis and use plain
+ *             prefix+key storage instead of the legacy MD5 hashing.
  */
 abstract class Horde_HashTable_Base implements ArrayAccess, Serializable
 {

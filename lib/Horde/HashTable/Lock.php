@@ -21,6 +21,8 @@
  * @copyright 2013-2017 Horde LLC
  * @license   http://www.horde.org/licenses/lgpl21 LGPL 2.1
  * @package   HashTable
+ *
+ * @deprecated Use {@see \Horde\HashTable\LockableHashTable}.
  */
 interface Horde_HashTable_Lock
 {

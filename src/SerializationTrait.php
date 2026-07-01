@@ -50,12 +50,21 @@ trait SerializationTrait
     /**
      * Deserialize a value retrieved from a string-only backend.
      *
-     * @param string $stored  The raw stored string.
+     * Accepts mixed so co-tenant writers (legacy Horde_HashTable_Memcache,
+     * prior releases of this package, or unrelated components sharing the
+     * same memcached pool) that stored bare non-string scalars are passed
+     * through instead of tripping a strict-type error. String values still
+     * go through the s:/p: prefix protocol; anything else is returned as-is.
+     *
+     * @param mixed $stored  The raw stored value as returned by the backend.
      *
      * @return mixed  The original value.
      */
-    protected function deserializeValue(string $stored): mixed
+    protected function deserializeValue(mixed $stored): mixed
     {
+        if (!is_string($stored)) {
+            return $stored;
+        }
         if (str_starts_with($stored, 's:')) {
             return substr($stored, 2);
         }

@@ -1,4 +1,14 @@
 ---
+2.0.1:
+  api: 2.0.1
+  state:
+    release: stable
+    api: stable
+  date: 2026-07-04
+  license:
+    identifier: LGPL-2.1-only
+    uri: https://spdx.org/licenses/LGPL-2.1-only.html
+  notes: 'fix(serialization): accept non-string stored values in deserializeValue'
 2.0.0:
   api: 2.0.0
   state:
@@ -8,9 +18,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: https://spdx.org/licenses/LGPL-2.1-only.html
-  notes: |-
-    chore: redo composer.json
-    refactor(HashTable): mark legacy lib/ classes deprecated, point to PSR-4 equivalents
+  notes: "chore: redo composer.json\nrefactor(HashTable): mark legacy lib/ classes deprecated, point to PSR-4 equivalents"
 2.0.0-RC3:
   api: 2.0.0-RC3
   state:
@@ -20,10 +28,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: https://spdx.org/licenses/LGPL-2.1-only.html
-  notes: |-
-    feat(redis): add typed config objects and sentinel support
-    fix(bin): correct autoloader resolution in horde-redis-tester
-    chore: Update workflow dependency
+  notes: "feat(redis): add typed config objects and sentinel support\nfix(bin): correct autoloader resolution in horde-redis-tester\nchore: Update workflow dependency"
 2.0.0-RC2:
   api: 2.0.0-RC2
   state:
@@ -33,8 +38,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: https://spdx.org/licenses/LGPL-2.1-only.html
-  notes: |-
-    feat: Add CLI redis tester to debug user feedback
+  notes: 'feat: Add CLI redis tester to debug user feedback'
 2.0.0-RC1:
   api: 2.0.0-RC1
   state:
@@ -44,8 +48,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: https://spdx.org/licenses/LGPL-2.1-only.html
-  notes: |-
-    feat: Support fallback from MGET to GET and support constructor option to suppress MGET
+  notes: 'feat: Support fallback from MGET to GET and support constructor option to suppress MGET'
 2.0.0-beta3:
   api: 2.0.0-beta3
   state:
@@ -55,8 +58,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: https://spdx.org/licenses/LGPL-2.1-only.html
-  notes: |-
-    test: Treat lib/ and src/ tests on equal levels.
+  notes: 'test: Treat lib/ and src/ tests on equal levels.'
 2.0.0-beta2:
   api: 2.0.0-beta2
   state:
@@ -66,9 +68,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: https://spdx.org/licenses/LGPL-2.1-only.html
-  notes: |-
-    docs: README and upgrading guide
-    feat: PSR-4 modernized hashtable API to go with the horde/cache library
+  notes: "docs: README and upgrading guide\nfeat: PSR-4 modernized hashtable API to go with the horde/cache library"
 2.0.0-beta1:
   api: 2.0.0-beta1
   state:
@@ -78,8 +78,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: https://spdx.org/licenses/LGPL-2.1-only.html
-  notes: |-
-    style: apply php-cs-fixer rules
+  notes: 'style: apply php-cs-fixer rules'
 2.0.0-alpha6:
   api: 2.0.0-alpha1
   state:
@@ -89,9 +88,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    ci: Modernize test pipeline
-    fix: Base class violated void return type
+  notes: "ci: Modernize test pipeline\nfix: Base class violated void return type\n"
 2.0.0-alpha5:
   api: 2.0.0-alpha1
   state:
@@ -101,9 +98,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    ci: Add quality tools
-    ci: Remove old CI files
+  notes: "ci: Add quality tools\nci: Remove old CI files\n"
 2.0.0-alpha4:
   api: 2.0.0-alpha1
   state:
@@ -113,10 +108,7 @@
   license:
     identifier: LGPL-2.1-only
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    fix: missing type hints for derived class
-    feat: Add modern serialize
-    style: apply php-cs-fixer
+  notes: "fix: missing type hints for derived class\nfeat: Add modern serialize\nstyle: apply php-cs-fixer\n"
 2.0.0-alpha3:
   api: 2.0.0alpha1
   state:
@@ -126,9 +118,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |-
-    Original version string was 2.0.0alpha3
-    |+
+  notes: "Original version string was 2.0.0alpha3\n|+"
 2.0.0-alpha2:
   api: 2.0.0alpha1
   state:
@@ -138,9 +128,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |-
-    Original version string was 2.0.0alpha2
-    |+
+  notes: "Original version string was 2.0.0alpha2\n|+"
 2.0.0-alpha1:
   api: 2.0.0alpha1
   state:
@@ -150,8 +138,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Original version string was 2.0.0alpha1
+  notes: "Original version string was 2.0.0alpha1\n"
 1.2.6:
   api: 1.2.0
   state:
@@ -161,9 +148,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Run Memcache tests on PHP 7 too.
-    [jan] Fix Redis tests.
+  notes: "[jan] Run Memcache tests on PHP 7 too.\n[jan] Fix Redis tests.\n"
 1.2.5:
   api: 1.2.0
   state:
@@ -173,7 +158,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: ~
+  notes: null
 1.2.4:
   api: 1.2.0
   state:
@@ -183,8 +168,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Mark PHP 7 as supported.
+  notes: "[jan] Mark PHP 7 as supported.\n"
 1.2.3:
   api: 1.2.0
   state:
@@ -194,8 +178,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Fix setting key prefixes.
+  notes: "[jan] Fix setting key prefixes.\n"
 1.2.2:
   api: 1.2.0
   state:
@@ -205,8 +188,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Add unit tests for Memcache and Redis backends.
+  notes: "[jan] Add unit tests for Memcache and Redis backends.\n"
 1.2.1:
   api: 1.2.0
   state:
@@ -216,8 +198,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [jan] Improve PSR-2 compatibility.
+  notes: "[jan] Improve PSR-2 compatibility.\n"
 1.2.0:
   api: 1.2.0
   state:
@@ -227,8 +208,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mms] Add Horde_Vfs driver.
+  notes: "[mms] Add Horde_Vfs driver.\n"
 1.1.3:
   api: 1.1.0
   state:
@@ -238,8 +218,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mms] In the Predis driver, ramp up to the maximum unlock wait interval (Request #13231).
+  notes: "[mms] In the Predis driver, ramp up to the maximum unlock wait interval (Request #13231).\n"
 1.1.2:
   api: 1.1.0
   state:
@@ -249,9 +228,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mms] Implement logging.
-    [mms] Fix inconsistent usage of 'expire' and 'timeout' options (standardize on 'expire', which is more semantically correct).
+  notes: "[mms] Implement logging.\n[mms] Fix inconsistent usage of 'expire' and 'timeout' options (standardize on 'expire', which is more semantically correct).\n"
 1.1.1:
   api: 1.1.0
   state:
@@ -261,8 +238,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mms] Fix getting data from Redis clusters.
+  notes: "[mms] Fix getting data from Redis clusters.\n"
 1.1.0:
   api: 1.1.0
   state:
@@ -272,8 +248,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mms] Add read-only property indicating whether driver supports locking.
+  notes: "[mms] Add read-only property indicating whether driver supports locking.\n"
 1.0.1:
   api: 1.0.0
   state:
@@ -283,8 +258,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    [mms] Workaround broken redis installations that don't support the keys() command (Bug #12416).
+  notes: "[mms] Workaround broken redis installations that don't support the keys() command (Bug #12416).\n"
 1.0.0:
   api: 1.0.0
   state:
@@ -294,8 +268,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Final release.
+  notes: "Final release.\n"
 1.0.0-RC1:
   api: 1.0.0
   state:
@@ -305,13 +278,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Original version string was 1.0.0RC1
-    [mms] Add initial unit tests.
-    [mms] Add null driver.
-    [mms] Add memory driver.
-    [mms] Actually have HashTable return results for get() and exists().
-    [mms] Add stats() method to the Memcache driver (Bug #12263).
+  notes: "Original version string was 1.0.0RC1\n[mms] Add initial unit tests.\n[mms] Add null driver.\n[mms] Add memory driver.\n[mms] Actually have HashTable return results for get() and exists().\n[mms] Add stats() method to the Memcache driver (Bug #12263).\n"
 1.0.0-beta2:
   api: 1.0.0
   state:
@@ -321,9 +288,7 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Original version string was 1.0.0beta2
-    [jan] Fix fatal errors.
+  notes: "Original version string was 1.0.0beta2\n[jan] Fix fatal errors.\n"
 1.0.0-beta1:
   api: 1.0.0
   state:
@@ -333,6 +298,4 @@
   license:
     identifier: LGPL-2.1
     uri: http://www.horde.org/licenses/lgpl21
-  notes: |
-    Original version string was 1.0.0beta1
-    First beta release
+  notes: "Original version string was 1.0.0beta1\nFirst beta release\n"

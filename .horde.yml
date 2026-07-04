@@ -6,17 +6,16 @@ description: A library that provides access to various hash table implementation
 list: dev
 type: library
 authors:
-  -
-    name: Michael Slusarz
+  - name: Michael Slusarz
     user: slusarz
     email: slusarz@horde.org
     active: false
     role: lead
 version:
-  release: 2.0.0
+  release: 2.0.1
   api: 2.0.0alpha1
 state:
-  release:
+  release: stable
   api: alpha
 license:
   identifier: LGPL-2.1-only
